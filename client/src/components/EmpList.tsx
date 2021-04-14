@@ -2,14 +2,14 @@
 import {
     EmpContext,
     IAppContextInterface,
-    IEmployee,
-} from "../contexts/EmpContext";
+    IEmployee
+} from '../contexts/EmpContext';
 
 // hooks imports
-import { useContext } from "react";
+import { useContext } from 'react';
 
 // toast imports
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 
 const EmpList = (): JSX.Element => {
     // context
@@ -18,18 +18,19 @@ const EmpList = (): JSX.Element => {
         deleteEmployee,
         setFormBtn,
         setEmpToUpdate,
+        isLoading
     }: IAppContextInterface = useContext(EmpContext);
 
     // notification function
     const notify = () => {
-        toast.error("Employee Deleted!!", {
+        toast.error('Employee Deleted!!', {
             position: toast.POSITION.TOP_CENTER,
-            autoClose: 2000,
+            autoClose: 2000
         });
     };
 
     const handleEdit = (employee: IEmployee) => {
-        setFormBtn("edit");
+        setFormBtn('edit');
         setEmpToUpdate(employee);
     };
 
@@ -40,6 +41,12 @@ const EmpList = (): JSX.Element => {
 
     return emp.length > 0 ? (
         <>
+            {/* show materialize css preloader */}
+            {isLoading && (
+                <div className="progress">
+                    <div className="indeterminate"></div>
+                </div>
+            )}
             <table className="striped centered">
                 <thead>
                     <tr>
@@ -81,7 +88,18 @@ const EmpList = (): JSX.Element => {
             </table>
         </>
     ) : (
-        <h5 className="center mt-5">There are no employees to show.</h5>
+        <>
+            {isLoading ? (
+                <div
+                    className="progress"
+                    style={{ maxWidth: '500px', margin: '40px auto' }}
+                >
+                    <div className="indeterminate"></div>
+                </div>
+            ) : (
+                <h5 className="center mt-5">There are no employees to show.</h5>
+            )}
+        </>
     );
 };
 
